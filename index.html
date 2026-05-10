@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PropInvest | 不動産投資物件検索・分析プラットフォーム</title>
+  <meta name="description" content="利回り・価格・立地から最適な不動産投資物件を検索。収益シミュレーターで投資判断をサポートします。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- ナビゲーション -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <i class="ph ph-buildings logo-icon"></i>
+        <span class="logo-text">PropInvest</span>
+      </div>
+      <div class="nav-links">
+        <a href="#search" class="nav-link active">物件検索</a>
+        <a href="#simulator" class="nav-link">収益シミュレーター</a>
+        <a href="#market" class="nav-link">市場動向</a>
+        <a href="#favorites" class="nav-link">お気に入り <span class="fav-count" id="fav-badge">0</span></a>
+      </div>
+      <button class="nav-cta" id="btn-start-search">
+        <i class="ph ph-magnifying-glass"></i> 今すぐ検索
+      </button>
+    </div>
+  </nav>
+
+  <!-- ヒーローセクション -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="hero-grid"></div>
+      <div class="hero-glow glow-1"></div>
+      <div class="hero-glow glow-2"></div>
+      <div class="hero-glow glow-3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <i class="ph ph-trend-up"></i> AI搭載 投資物件分析
+      </div>
+      <h1 class="hero-title">
+        <span class="hero-title-line1">最高利回りの物件を、</span>
+        <span class="hero-title-line2 gradient-text">最速で見つける。</span>
+      </h1>
+      <p class="hero-subtitle">
+        全国の収益物件をリアルタイムスコアリング。<br>
+        価格・立地・利回りで徹底比較し、あなたの理想の投資物件へ。
+      </p>
+      <!-- クイック検索バー -->
+      <div class="hero-search-bar">
+        <div class="search-input-group">
+          <i class="ph ph-map-pin search-icon"></i>
+          <input type="text" id="hero-location" placeholder="エリア（例：東京、大阪、福岡）" class="search-input">
+        </div>
+        <div class="search-input-group">
+          <i class="ph ph-currency-jpy search-icon"></i>
+          <select id="hero-price" class="search-input search-select">
+            <option value="">価格帯（上限）</option>
+            <option value="1000">〜1,000万円</option>
+            <option value="3000">〜3,000万円</option>
+            <option value="5000">〜5,000万円</option>
+            <option value="10000">〜1億円</option>
+            <option value="99999">1億円以上</option>
+          </select>
+        </div>
+        <div class="search-input-group">
+          <i class="ph ph-percent search-icon"></i>
+          <select id="hero-yield" class="search-input search-select">
+            <option value="">利回り（最低）</option>
+            <option value="5">5%以上</option>
+            <option value="7">7%以上</option>
+            <option value="10">10%以上</option>
+            <option value="15">15%以上</option>
+          </select>
+        </div>
+        <button class="hero-search-btn" id="hero-search-btn">
+          <i class="ph ph-magnifying-glass"></i> 検索する
+        </button>
+      </div>
+      <!-- 統計 -->
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="stat-num">12,847</span>
+          <span class="stat-label">掲載物件数</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <span class="stat-num">8.3%</span>
+          <span class="stat-label">平均表面利回り</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <span class="stat-num">47都道府県</span>
+          <span class="stat-label">対応エリア</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 検索・フィルターセクション -->
+  <section class="search-section" id="search">
+    <div class="container">
+      <!-- フィルターパネル -->
+      <div class="filter-panel">
+        <div class="filter-header">
+          <h2 class="filter-title"><i class="ph ph-funnel"></i> 詳細フィルター</h2>
+          <button class="btn-reset" id="btn-reset-filter">
+            <i class="ph ph-arrow-counter-clockwise"></i> リセット
+          </button>
+        </div>
+        <div class="filter-body">
+          <!-- キーワード検索 -->
+          <div class="filter-group">
+            <label class="filter-label">キーワード検索</label>
+            <div class="search-input-group" style="background:var(--bg3);border-radius:10px;padding:8px 12px;border:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+              <i class="ph ph-magnifying-glass" style="color:var(--primary);font-size:1rem;"></i>
+              <input type="text" id="filter-keyword" placeholder="物件名・エリア・種別で検索" style="background:transparent;border:none;color:var(--text);font-size:.875rem;outline:none;width:100%;font-family:inherit;">
+            </div>
+          </div>
+          <!-- エリア -->
+          <div class="filter-group">
+            <label class="filter-label">エリア・都市</label>
+            <div class="tag-group" id="area-tags">
+              <button class="tag-btn active" data-value="all">すべて</button>
+              <button class="tag-btn" data-value="東京">東京</button>
+              <button class="tag-btn" data-value="大阪">大阪</button>
+              <button class="tag-btn" data-value="福岡">福岡</button>
+              <button class="tag-btn" data-value="名古屋">名古屋</button>
+              <button class="tag-btn" data-value="札幌">札幌</button>
+              <button class="tag-btn" data-value="横浜">横浜</button>
+              <button class="tag-btn" data-value="京都">京都</button>
+            </div>
+          </div>
+          <!-- 物件種別 -->
+          <div class="filter-group">
+            <label class="filter-label">物件種別</label>
+            <div class="tag-group" id="type-tags">
+              <button class="tag-btn active" data-value="all">すべて</button>
+              <button class="tag-btn" data-value="区分マンション">区分マンション</button>
+              <button class="tag-btn" data-value="一棟アパート">一棟アパート</button>
+              <button class="tag-btn" data-value="一棟マンション">一棟マンション</button>
+              <button class="tag-btn" data-value="戸建て">戸建て</button>
+              <button class="tag-btn" data-value="土地">土地</button>
+            </div>
+          </div>
+          <!-- 価格・利回りスライダー -->
+          <div class="filter-sliders">
+            <div class="slider-group">
+              <label class="filter-label">価格帯（万円）</label>
+              <div class="range-values">
+                <span id="price-min-val">0</span>〜<span id="price-max-val">20,000</span>万円
+              </div>
+              <div class="dual-range">
+                <input type="range" id="price-min" min="0" max="20000" step="100" value="0" class="range-slider range-min">
+                <input type="range" id="price-max" min="0" max="20000" step="100" value="20000" class="range-slider range-max">
+              </div>
+            </div>
+            <div class="slider-group">
+              <label class="filter-label">表面利回り（%）</label>
+              <div class="range-values">
+                <span id="yield-min-val">0</span>%〜<span id="yield-max-val">30</span>%以上
+              </div>
+              <div class="dual-range">
+                <input type="range" id="yield-min" min="0" max="30" step="0.5" value="0" class="range-slider range-min">
+                <input type="range" id="yield-max" min="0" max="30" step="0.5" value="30" class="range-slider range-max">
+              </div>
+            </div>
+          </div>
+          <!-- 追加条件 -->
+          <div class="filter-group">
+            <label class="filter-label">こだわり条件</label>
+            <div class="checkbox-group">
+              <label class="checkbox-item"><input type="checkbox" id="chk-new-listing"> <span>新着（3日以内）</span></label>
+              <label class="checkbox-item"><input type="checkbox" id="chk-price-down"> <span>値下がり物件</span></label>
+              <label class="checkbox-item"><input type="checkbox" id="chk-vacant"> <span>空き室あり</span></label>
+              <label class="checkbox-item"><input type="checkbox" id="chk-bank-ok"> <span>銀行融資実績あり</span></label>
+            </div>
+          </div>
+          <button class="btn-apply-filter" id="btn-apply-filter">
+            <i class="ph ph-magnifying-glass"></i> この条件で検索する
+          </button>
+        </div>
+      </div>
+
+      <!-- 検索結果 -->
+      <div class="results-panel">
+        <!-- ソートバー -->
+        <div class="results-topbar">
+          <div class="results-count">
+            <span id="result-count">24</span>件の物件が見つかりました
+          </div>
+          <div class="sort-controls">
+            <span class="sort-label">並び替え：</span>
+            <select id="sort-select" class="sort-select">
+              <option value="yield-desc">利回り（高い順）</option>
+              <option value="price-asc">価格（安い順）</option>
+              <option value="price-desc">価格（高い順）</option>
+              <option value="score-desc">投資スコア順</option>
+              <option value="new">新着順</option>
+            </select>
+            <div class="view-toggle">
+              <button class="view-btn active" id="view-grid" title="グリッド表示"><i class="ph ph-squares-four"></i></button>
+              <button class="view-btn" id="view-list" title="リスト表示"><i class="ph ph-list"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 物件カードグリッド -->
+        <div class="property-grid" id="property-grid">
+          <!-- JSで生成 -->
+        </div>
+
+        <!-- ページネーション -->
+        <div class="pagination" id="pagination">
+          <button class="page-btn" id="prev-page"><i class="ph ph-caret-left"></i></button>
+          <span class="page-info" id="page-info">1 / 3</span>
+          <button class="page-btn" id="next-page"><i class="ph ph-caret-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 収益シミュレーターセクション -->
+  <section class="simulator-section" id="simulator">
+    <div class="sim-container">
+      <div class="section-header center">
+        <div class="section-badge">収益シミュレーター</div>
+        <h2 class="section-title">投資リターンを<span class="gradient-text">即座に試算</span></h2>
+        <p class="section-sub">物件情報を入力するだけで、キャッシュフロー・投資回収期間・ROIを自動計算します。</p>
+      </div>
+      <div class="sim-card">
+        <div class="sim-inputs">
+          <h3 class="sim-section-title"><i class="ph ph-pencil-simple"></i> 物件情報を入力</h3>
+          <div class="sim-grid">
+            <div class="sim-input-group">
+              <label class="sim-label">購入価格（万円）</label>
+              <div class="sim-input-wrap">
+                <input type="number" id="sim-price" class="sim-input" value="3000" min="100" step="100">
+                <span class="sim-unit">万円</span>
+              </div>
+            </div>
+            <div class="sim-input-group">
+              <label class="sim-label">想定月間家賃収入（万円）</label>
+              <div class="sim-input-wrap">
+                <input type="number" id="sim-rent" class="sim-input" value="20" min="1" step="0.5">
+                <span class="sim-unit">万円/月</span>
+              </div>
+            </div>
+            <div class="sim-input-group">
+              <label class="sim-label">頭金（万円）</label>
+              <div class="sim-input-wrap">
+                <input type="number" id="sim-down" class="sim-input" value="600" min="0" step="50">
+                <span class="sim-unit">万円</span>
+              </div>
+            </div>
+            <div class="sim-input-group">
+              <label class="sim-label">ローン金利（年率%）</label>
+              <div class="sim-input-wrap">
+                <input type="number" id="sim-rate" class="sim-input" value="1.8" min="0" max="10" step="0.1">
+                <span class="sim-unit">%</span>
+              </div>
+            </div>
+            <div class="sim-input-group">
+              <label class="sim-label">ローン期間（年）</label>
+              <div class="sim-input-wrap">
+                <input type="number" id="sim-period" class="sim-input" value="25" min="1" max="35" step="1">
+                <span class="sim-unit">年</span>
+              </div>
+            </div>
+            <div class="sim-input-group">
+              <label class="sim-label">空室率（%）</label>
+              <div class="sim-input-wrap">
+                <input type="number" id="sim-vacancy" class="sim-input" value="5" min="0" max="50" step="1">
+                <span class="sim-unit">%</span>
+              </div>
+            </div>
+            <div class="sim-input-group">
+              <label class="sim-label">管理費・諸経費（月）</label>
+              <div class="sim-input-wrap">
+                <input type="number" id="sim-cost" class="sim-input" value="2" min="0" step="0.5">
+                <span class="sim-unit">万円/月</span>
+              </div>
+            </div>
+          </div>
+          <button class="sim-calc-btn" id="sim-calc-btn">
+            <i class="ph ph-calculator"></i> シミュレーション実行
+          </button>
+        </div>
+        <div class="sim-results" id="sim-results">
+          <h3 class="sim-section-title"><i class="ph ph-chart-bar"></i> シミュレーション結果</h3>
+          <div class="sim-metrics">
+            <div class="sim-metric">
+              <div class="sim-metric-label">表面利回り</div>
+              <div class="sim-metric-value" id="res-gross-yield">8.0<span class="unit">%</span></div>
+            </div>
+            <div class="sim-metric">
+              <div class="sim-metric-label">実質利回り</div>
+              <div class="sim-metric-value" id="res-net-yield">6.7<span class="unit">%</span></div>
+            </div>
+            <div class="sim-metric highlight">
+              <div class="sim-metric-label">月間キャッシュフロー</div>
+              <div class="sim-metric-value positive" id="res-cashflow">+5.2<span class="unit">万円</span></div>
+            </div>
+            <div class="sim-metric">
+              <div class="sim-metric-label">年間キャッシュフロー</div>
+              <div class="sim-metric-value positive" id="res-annual-cf">+62.4<span class="unit">万円</span></div>
+            </div>
+            <div class="sim-metric">
+              <div class="sim-metric-label">投資回収期間</div>
+              <div class="sim-metric-value" id="res-payback">9.6<span class="unit">年</span></div>
+            </div>
+            <div class="sim-metric">
+              <div class="sim-metric-label">月間ローン返済額</div>
+              <div class="sim-metric-value" id="res-loan-payment">10.8<span class="unit">万円</span></div>
+            </div>
+          </div>
+          <!-- キャッシュフロー棒グラフ -->
+          <div class="cf-chart">
+            <div class="cf-chart-title">キャッシュフロー構成</div>
+            <div class="cf-bars" id="cf-bars"></div>
+          </div>
+          <!-- 投資判定 -->
+          <div class="invest-verdict" id="invest-verdict">
+            <div class="verdict-icon positive"><i class="ph ph-check-circle-fill"></i></div>
+            <div class="verdict-text">
+              <strong>投資推奨</strong> — 良好なキャッシュフローが見込めます。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 市場動向セクション -->
+  <section class="market-section" id="market">
+    <div class="market-container">
+      <div class="section-header center">
+        <div class="section-badge">市場動向</div>
+        <h2 class="section-title">エリア別<span class="gradient-text">投資指標</span></h2>
+      </div>
+      <div class="market-cards">
+        <div class="market-card">
+          <div class="market-area">東京（城東エリア）</div>
+          <div class="market-stats-row">
+            <div class="ms">
+              <div class="ms-label">平均利回り</div>
+              <div class="ms-value yield">5.8%</div>
+            </div>
+            <div class="ms">
+              <div class="ms-label">平均価格</div>
+              <div class="ms-value">3,200万円</div>
+            </div>
+            <div class="ms">
+              <div class="ms-label">空室率</div>
+              <div class="ms-value low">3.1%</div>
+            </div>
+          </div>
+          <div class="market-trend up"><i class="ph ph-trend-up"></i> 前年比 +2.3%</div>
+        </div>
+        <div class="market-card">
+          <div class="market-area">大阪（北区・淀川）</div>
+          <div class="market-stats-row">
+            <div class="ms">
+              <div class="ms-label">平均利回り</div>
+              <div class="ms-value yield">7.2%</div>
+            </div>
+            <div class="ms">
+              <div class="ms-label">平均価格</div>
+              <div class="ms-value">1,800万円</div>
+            </div>
+            <div class="ms">
+              <div class="ms-label">空室率</div>
+              <div class="ms-value mid">5.4%</div>
+            </div>
+          </div>
+          <div class="market-trend up"><i class="ph ph-trend-up"></i> 前年比 +4.1%</div>
+        </div>
+        <div class="market-card">
+          <div class="market-area">福岡（博多・天神）</div>
+          <div class="market-stats-row">
+            <div class="ms">
+              <div class="ms-label">平均利回り</div>
+              <div class="ms-value yield">8.5%</div>
+            </div>
+            <div class="ms">
+              <div class="ms-label">平均価格</div>
+              <div class="ms-value">1,200万円</div>
+            </div>
+            <div class="ms">
+              <div class="ms-label">空室率</div>
+              <div class="ms-value low">4.2%</div>
+            </div>
+          </div>
+          <div class="market-trend up"><i class="ph ph-trend-up"></i> 前年比 +6.8%</div>
+        </div>
+        <div class="market-card">
+          <div class="market-area">名古屋（中村・中区）</div>
+          <div class="market-stats-row">
+            <div class="ms">
+              <div class="ms-label">平均利回り</div>
+              <div class="ms-value yield">7.8%</div>
+            </div>
+            <div class="ms">
+              <div class="ms-label">平均価格</div>
+              <div class="ms-value">1,500万円</div>
+            </div>
+            <div class="ms">
+              <div class="ms-label">空室率</div>
+              <div class="ms-value mid">6.1%</div>
+            </div>
+          </div>
+          <div class="market-trend down"><i class="ph ph-trend-down"></i> 前年比 -0.5%</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 物件詳細モーダル -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="property-modal">
+      <button class="modal-close" id="modal-close"><i class="ph ph-x"></i></button>
+      <div class="modal-content" id="modal-content">
+        <!-- JSで生成 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- トースト通知 -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
