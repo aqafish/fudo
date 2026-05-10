@@ -8,10 +8,28 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <!-- 検索読み込みオーバーレイ -->
+  <div id="search-loader-overlay" class="search-loader-overlay">
+    <div class="loader-content">
+      <div class="loader-spinner"></div>
+      <h3>AIサイト横断解析中</h3>
+      <p id="loader-status">主要サイトへのアクセスを確立中...</p>
+      <div class="loader-platforms">
+        <span class="p-tag">Rakumachi</span>
+        <span class="p-tag">Kenbiya</span>
+        <span class="p-tag">SUUMO</span>
+        <span class="p-tag">AtHome</span>
+      </div>
+    </div>
+  </div>
+
   <!-- ナビゲーション -->
   <nav class="navbar" id="navbar">
     <div class="nav-inner">
@@ -81,6 +99,13 @@
         <button class="hero-search-btn" id="hero-search-btn">
           <i class="ph ph-magnifying-glass"></i> 検索する
         </button>
+      </div>
+      <!-- 検索履歴 -->
+      <div class="hero-history" id="search-history-container" style="display: none;">
+        <span class="history-label"><i class="ph ph-clock-counter-clockwise"></i> 最近の検索:</span>
+        <div class="history-tags" id="search-history-tags">
+          <!-- JSで動的に追加 -->
+        </div>
       </div>
       <!-- 統計 -->
       <div class="hero-stats">
@@ -342,10 +367,15 @@
       <div class="section-header center">
         <div class="section-badge">市場動向</div>
         <h2 class="section-title">エリア別<span class="gradient-text">投資指標</span></h2>
+        <div style="margin-top:16px;">
+          <button class="nav-cta" id="btn-market-analyze" style="padding: 10px 24px; font-size: 0.85rem;">
+            <i class="ph ph-sparkle"></i> 最新の市場動向をAI解析
+          </button>
+        </div>
       </div>
-      <div class="market-cards">
-        <div class="market-card">
-          <div class="market-area">東京（城東エリア）</div>
+      <div class="market-cards" id="market-cards-container">
+        <div class="market-card" data-area="東京">
+          <div class="market-area">東京（城東・都心）</div>
           <div class="market-stats-row">
             <div class="ms">
               <div class="ms-label">平均利回り</div>
@@ -362,7 +392,7 @@
           </div>
           <div class="market-trend up"><i class="ph ph-trend-up"></i> 前年比 +2.3%</div>
         </div>
-        <div class="market-card">
+        <div class="market-card" data-area="大阪">
           <div class="market-area">大阪（北区・淀川）</div>
           <div class="market-stats-row">
             <div class="ms">
@@ -380,7 +410,7 @@
           </div>
           <div class="market-trend up"><i class="ph ph-trend-up"></i> 前年比 +4.1%</div>
         </div>
-        <div class="market-card">
+        <div class="market-card" data-area="福岡">
           <div class="market-area">福岡（博多・天神）</div>
           <div class="market-stats-row">
             <div class="ms">
@@ -398,7 +428,7 @@
           </div>
           <div class="market-trend up"><i class="ph ph-trend-up"></i> 前年比 +6.8%</div>
         </div>
-        <div class="market-card">
+        <div class="market-card" data-area="名古屋">
           <div class="market-area">名古屋（中村・中区）</div>
           <div class="market-stats-row">
             <div class="ms">

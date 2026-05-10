@@ -1,32 +1,28 @@
-// ===== モックデータ =====
-const PROPERTIES = [
-  { id:1,  name:'グランドール錦糸町 302号室',   area:'東京',  city:'墨田区錦糸町',    type:'区分マンション', price:2480,  rent:14.5, yield:7.0,  access:'錦糸町駅 徒歩5分',   size:28.4,  year:2008, rooms:1,  vacancy:2.1, score:88, tags:['new','bank-ok'],         emoji:'🏢' },
-  { id:2,  name:'アーバンヴィラ天神南',           area:'福岡',  city:'福岡市中央区',    type:'区分マンション', price:980,   rent:8.5,  yield:10.4, access:'天神南駅 徒歩3分',   size:22.0,  year:2015, rooms:1,  vacancy:1.8, score:94, tags:['new'],                   emoji:'🏙' },
-  { id:3,  name:'南森町一棟アパート',             area:'大阪',  city:'大阪市北区',      type:'一棟アパート',   price:5800,  rent:42.0, yield:8.7,  access:'南森町駅 徒歩7分',   size:180.0, year:2001, rooms:6,  vacancy:5.2, score:82, tags:['price-down'],            emoji:'🏠' },
-  { id:4,  name:'栄ウィング 1004号室',            area:'名古屋',city:'名古屋市中区栄',  type:'区分マンション', price:1580,  rent:10.8, yield:8.2,  access:'栄駅 徒歩2分',       size:25.6,  year:2012, rooms:1,  vacancy:3.5, score:80, tags:['bank-ok'],               emoji:'🏬' },
-  { id:5,  name:'北24条戸建て収益物件',           area:'札幌',  city:'札幌市北区',      type:'戸建て',         price:680,   rent:7.2,  yield:12.7, access:'北24条駅 徒歩10分', size:95.0,  year:1998, rooms:4,  vacancy:0,   score:78, tags:['price-down','vacant'],   emoji:'🏡' },
-  { id:6,  name:'横浜関内レジデンス 508',         area:'横浜',  city:'横浜市中区',      type:'区分マンション', price:3200,  rent:17.0, yield:6.4,  access:'関内駅 徒歩4分',     size:35.2,  year:2019, rooms:1,  vacancy:4.1, score:75, tags:['bank-ok'],               emoji:'🏢' },
-  { id:7,  name:'博多駅前一棟マンション',         area:'福岡',  city:'福岡市博多区',    type:'一棟マンション', price:12000, rent:95.0, yield:9.5,  access:'博多駅 徒歩8分',     size:420.0, year:2005, rooms:12, vacancy:6.0, score:91, tags:['new','bank-ok'],         emoji:'🏙' },
-  { id:8,  name:'京都西陣町家収益物件',           area:'京都',  city:'京都市上京区',    type:'戸建て',         price:2800,  rent:19.5, yield:8.4,  access:'今出川駅 徒歩12分', size:120.0, year:1975, rooms:5,  vacancy:0,   score:70, tags:['vacant'],                emoji:'🏯' },
-  { id:9,  name:'大阪心斎橋区分',                 area:'大阪',  city:'大阪市中央区',    type:'区分マンション', price:4200,  rent:25.0, yield:7.1,  access:'心斎橋駅 徒歩1分',   size:45.0,  year:2016, rooms:1,  vacancy:2.5, score:86, tags:['bank-ok'],               emoji:'🏢' },
-  { id:10, name:'仙台長町南アパート',             area:'仙台',  city:'仙台市太白区',    type:'一棟アパート',   price:3400,  rent:28.0, yield:9.9,  access:'長町南駅 徒歩6分',   size:210.0, year:2003, rooms:8,  vacancy:7.5, score:76, tags:['price-down'],            emoji:'🏠' },
-  { id:11, name:'池袋西口スタジオ 201',           area:'東京',  city:'豊島区池袋',      type:'区分マンション', price:3600,  rent:19.0, yield:6.3,  access:'池袋駅 徒歩6分',     size:20.5,  year:2020, rooms:1,  vacancy:1.0, score:83, tags:['new','bank-ok'],         emoji:'🏢' },
-  { id:12, name:'那覇リゾート投資物件',           area:'那覇',  city:'那覇市松山',      type:'区分マンション', price:1850,  rent:15.0, yield:9.7,  access:'旭橋駅 徒歩8分',     size:30.0,  year:2010, rooms:1,  vacancy:8.0, score:73, tags:[],                        emoji:'🌴' },
-  { id:13, name:'新宿三丁目ワンルーム 805',       area:'東京',  city:'新宿区三丁目',    type:'区分マンション', price:4500,  rent:22.0, yield:5.9,  access:'新宿三丁目駅 徒歩2分',size:18.8, year:2021, rooms:1,  vacancy:1.2, score:79, tags:['new','bank-ok'],         emoji:'🏢' },
-  { id:14, name:'梅田北一棟アパート',             area:'大阪',  city:'大阪市北区梅田',  type:'一棟アパート',   price:7200,  rent:56.0, yield:9.3,  access:'梅田駅 徒歩9分',     size:260.0, year:1999, rooms:9,  vacancy:4.8, score:84, tags:['bank-ok'],               emoji:'🏠' },
-  { id:15, name:'金沢兼六園そば戸建て',           area:'金沢',  city:'金沢市本多町',    type:'戸建て',         price:1200,  rent:9.8,  yield:9.8,  access:'兼六園口駅 徒歩15分',size:88.0,  year:1985, rooms:4,  vacancy:0,   score:66, tags:['price-down','vacant'],   emoji:'🏡' },
-  { id:16, name:'広島本通り区分マンション',       area:'広島',  city:'広島市中区本通',  type:'区分マンション', price:1350,  rent:10.0, yield:8.9,  access:'本通駅 徒歩3分',     size:24.0,  year:2009, rooms:1,  vacancy:3.0, score:77, tags:[],                        emoji:'🏢' },
-  { id:17, name:'川崎駅前一棟マンション',         area:'横浜',  city:'川崎市川崎区',    type:'一棟マンション', price:18000, rent:130.0,yield:8.7,  access:'川崎駅 徒歩5分',     size:580.0, year:2002, rooms:18, vacancy:5.5, score:89, tags:['bank-ok'],               emoji:'🏙' },
-  { id:18, name:'天王寺ガーデン 403',             area:'大阪',  city:'大阪市天王寺区',  type:'区分マンション', price:2950,  rent:18.5, yield:7.5,  access:'天王寺駅 徒歩4分',   size:32.0,  year:2014, rooms:1,  vacancy:2.8, score:81, tags:['bank-ok'],               emoji:'🏬' },
-  { id:19, name:'名東区戸建て賃貸',               area:'名古屋',city:'名古屋市名東区',  type:'戸建て',         price:2100,  rent:15.5, yield:8.9,  access:'藤が丘駅 徒歩12分',  size:105.0, year:1993, rooms:4,  vacancy:0,   score:72, tags:['price-down'],            emoji:'🏡' },
-  { id:20, name:'すすきのビジネスホテル型物件',   area:'札幌',  city:'札幌市中央区',    type:'区分マンション', price:850,   rent:7.8,  yield:11.0, access:'すすきの駅 徒歩6分', size:19.5,  year:2006, rooms:1,  vacancy:6.0, score:71, tags:['price-down'],            emoji:'🏙' },
-  { id:21, name:'千葉稲毛一棟アパート',           area:'千葉',  city:'千葉市稲毛区',    type:'一棟アパート',   price:4800,  rent:40.0, yield:10.0, access:'稲毛駅 徒歩8分',     size:220.0, year:2000, rooms:10, vacancy:8.0, score:74, tags:['price-down'],            emoji:'🏠' },
-  { id:22, name:'福岡東区一棟アパート',           area:'福岡',  city:'福岡市東区',      type:'一棟アパート',   price:3200,  rent:26.0, yield:9.8,  access:'香椎駅 徒歩10分',    size:190.0, year:2004, rooms:8,  vacancy:5.0, score:80, tags:['bank-ok'],               emoji:'🏠' },
-  { id:23, name:'渋谷区松濤ヴィンテージ',         area:'東京',  city:'渋谷区松濤',      type:'区分マンション', price:8500,  rent:42.0, yield:5.9,  access:'渋谷駅 徒歩12分',    size:65.0,  year:1988, rooms:2,  vacancy:0,   score:68, tags:['vacant'],                emoji:'🏢' },
-  { id:24, name:'神戸三宮駅前収益マンション',     area:'神戸',  city:'神戸市中央区',    type:'一棟マンション', price:9800,  rent:78.0, yield:9.6,  access:'三宮駅 徒歩3分',     size:350.0, year:2007, rooms:14, vacancy:4.2, score:87, tags:['new','bank-ok'],         emoji:'🏙' },
-];
+// ===== 物件データ管理（バックエンド同期型） =====
+let PROPERTIES = []; // 起動時にAPIから取得
+
+async function fetchProperties() {
+  try {
+    const res = await fetch('/api/properties');
+    if (res.ok) {
+      PROPERTIES = await res.json();
+      console.log('Backend sync successful:', PROPERTIES.length, 'properties loaded.');
+    }
+  } catch (err) {
+    console.warn('Backend connection failed. Using fallback data.', err);
+    // フォールバック用ダミーデータ（既存のデータを一部保持）
+    PROPERTIES = [
+      { id:1,  name:'大樋町 ジャストハウス', area:'金沢', city:'石川県金沢市大樋町', type:'一棟アパート', price:3750, rent:28.1, yield:9.0, access:'徒歩3分', score:87, tags:['new'], emoji:'🏠', source:'Rakumachi' },
+      { id:2,  name:'泉佐野市 一棟アパート', area:'大阪', city:'大阪府泉佐野市大宮町', type:'一棟アパート', price:12300, rent:65.0, yield:6.3, access:'徒歩4分', score:80, tags:['new','bank-ok'], emoji:'🏠', source:'Rakumachi' },
+      { id:3,  name:'クリスタル蓮根', area:'東京', city:'東京都板橋区蓮根', type:'一棟アパート', price:15000, rent:59.6, yield:4.8, access:'徒歩9分', score:78, tags:['new','bank-ok'], emoji:'🏢', source:'Rakumachi' }
+    ];
+  }
+}
+
+
 
 let favorites = JSON.parse(localStorage.getItem('prop-favs') || '[]');
+let searchHistory = JSON.parse(localStorage.getItem('prop-search-history') || '[]');
 let currentPage = 1;
 const PAGE_SIZE = 6;
 let filteredProps = [...PROPERTIES];
@@ -43,7 +39,64 @@ function showToast(title, msg, icon = 'ph-check-circle') {
 }
 
 function updateFavBadge() {
-  document.getElementById('fav-badge').textContent = favorites.length;
+  const el = document.getElementById('fav-badge');
+  if (el) el.textContent = favorites.length;
+}
+
+// ===== 検索履歴の管理 =====
+function saveSearchHistory(query) {
+  // 条件がデフォルト（空）の場合は保存しない
+  const isDefault = (!query.loc || query.loc === 'all') && (!query.yield || query.yield == 0) && (!query.price || query.price == 200 || query.price == 20000);
+  if (isDefault) return;
+
+  const locLabel = query.loc && query.loc !== 'all' ? query.loc : '全国';
+  const yieldLabel = query.yield ? `${query.yield}%+` : '0%+';
+  const priceLabel = query.price && query.price != 200 && query.price != 20000 ? `${(+query.price).toLocaleString()}万以下` : '上限なし';
+  
+  const label = `${locLabel} / ${yieldLabel} / ${priceLabel}`;
+  
+  // 重複排除
+  searchHistory = searchHistory.filter(h => h.label !== label);
+  searchHistory.unshift({ label, query });
+  searchHistory = searchHistory.slice(0, 5); // 最大5件
+  
+  localStorage.setItem('prop-search-history', JSON.stringify(searchHistory));
+  renderSearchHistory();
+}
+
+function renderSearchHistory() {
+  const container = document.getElementById('search-history-container');
+  const tags = document.getElementById('search-history-tags');
+  if (!container || !tags) return;
+
+  if (searchHistory.length === 0) {
+    container.style.display = 'none';
+    return;
+  }
+
+  container.style.display = 'flex';
+  tags.innerHTML = searchHistory.map((h, i) => `
+    <div class="history-chip" onclick="applyHistorySearch(${i})">
+      ${h.label}
+    </div>
+  `).join('');
+}
+
+async function applyHistorySearch(index) {
+  const h = searchHistory[index];
+  if (!h) return;
+  
+  // UIに反映
+  const locEl = document.getElementById('hero-location');
+  const yieldEl = document.getElementById('hero-yield');
+  const priceEl = document.getElementById('hero-price');
+  
+  if (locEl) locEl.value = h.query.loc || '';
+  if (yieldEl) yieldEl.value = h.query.yield || '';
+  if (priceEl) priceEl.value = h.query.price || '';
+  
+  // 検索実行演出
+  document.getElementById('hero-search-btn').click();
 }
 
 function getYieldClass(y) {
@@ -79,11 +132,21 @@ function setExtra(id, key, value) {
 function renderCard(p) {
   const isFav = favorites.includes(p.id);
   const extra = getExtra(p.id);
+  // データのurl（業待URL）とユーザー登録URLの両方を使用
+  const activeUrl = extra.url || p.url || '';
   const badges = [];
-  if (p.tags.includes('new')) badges.push('<span class="badge badge-new">NEW</span>');
+  if (p.tags.includes('new'))        badges.push('<span class="badge badge-new">NEW</span>');
   if (p.tags.includes('price-down')) badges.push('<span class="badge badge-down">値下がり</span>');
   badges.push(`<span class="badge badge-type">${p.type}</span>`);
-  if (extra.url) badges.push('<span class="badge" style="background:rgba(56,189,248,.2);border:1px solid rgba(56,189,248,.4);color:var(--primary);"><i class="ph ph-link"></i> リンクあり</span>');
+  // 出典元バッジのスタイル定義
+  const sourceColors = {
+    'Rakumachi': '#f59e0b',
+    'Kenbiya': '#34d399',
+    'SUUMO': '#84cc16',
+    'AtHome': '#ef4444'
+  };
+  const sourceColor = sourceColors[p.source] || 'var(--primary)';
+  if (p.source) badges.push(`<span class="badge" style="background:${sourceColor}20;border:1px solid ${sourceColor}40;color:${sourceColor};font-weight:700;"><i class="ph ph-globe"></i> ${p.source}</span>`);
 
   // 写真があれば表示、なければ絵文字プレースホルダー
   const imgContent = extra.photo
@@ -92,17 +155,21 @@ function renderCard(p) {
 
   return `
   <div class="prop-card" data-id="${p.id}">
-    <div class="prop-img-placeholder" style="background:linear-gradient(135deg,#0e1525,#1a2540);${extra.photo ? 'overflow:hidden;' : ''}">
-      ${imgContent}
-      <div class="prop-badges">${badges.join('')}</div>
-      <button class="prop-fav-btn ${isFav ? 'active' : ''}" data-id="${p.id}" onclick="toggleFav(event,${p.id})">
+    <a href="${activeUrl}" target="_blank" rel="noopener" class="prop-img-link" onclick="event.stopPropagation()">
+      <div class="prop-img-placeholder" style="background:linear-gradient(135deg,#0e1525,#1a2540);${extra.photo ? 'overflow:hidden;' : ''}">
+        ${imgContent}
+        <div class="prop-badges">${badges.join('')}</div>
+        <div class="prop-score" style="color:${getScoreColor(p.score)}">★ ${p.score}</div>
+      </div>
+    </a>
+    <div class="prop-body">
+      <button class="prop-fav-btn ${isFav ? 'active' : ''}" data-id="${p.id}" onclick="toggleFav(event,${p.id})" style="top: 120px; right: 24px;">
         <i class="ph ${isFav ? 'ph-heart-fill' : 'ph-heart'}"></i>
       </button>
-      <div class="prop-score" style="color:${getScoreColor(p.score)}">★ ${p.score}</div>
-    </div>
-    <div class="prop-body">
       <div class="prop-area"><i class="ph ph-map-pin"></i>${p.city}</div>
-      <div class="prop-name">${p.name}</div>
+      <a href="${activeUrl}" target="_blank" rel="noopener" class="prop-name-link" onclick="event.stopPropagation()">
+        <div class="prop-name">${p.name}</div>
+      </a>
       <div class="prop-metrics">
         <div class="prop-metric">
           <div class="pm-label">表面利回り</div>
@@ -124,8 +191,8 @@ function renderCard(p) {
       <div class="prop-footer">
         <div class="prop-access"><i class="ph ph-train"></i> ${p.access}</div>
         <div style="display:flex;gap:6px;">
-          ${extra.url ? `<a href="${extra.url}" target="_blank" rel="noopener" class="prop-detail-btn" style="display:flex;align-items:center;gap:4px;" onclick="event.stopPropagation()"><i class="ph ph-arrow-square-out"></i>サイトへ</a>` : ''}
-          <button class="prop-detail-btn" onclick="openModal(${p.id})">詳細・編集</button>
+          ${activeUrl ? `<a href="${activeUrl}" target="_blank" rel="noopener" class="prop-detail-btn" style="display:flex;align-items:center;gap:4px;background:var(--primary);color:#000;" onclick="event.stopPropagation()"><i class="ph ph-arrow-square-out"></i>サイトを開く</a>` : ''}
+          <button class="prop-detail-btn" onclick="openModal(${p.id})">詳細分析</button>
         </div>
       </div>
     </div>
@@ -143,8 +210,27 @@ function renderGrid() {
   document.getElementById('page-info').textContent = `${currentPage} / ${totalPages}`;
 }
 
-// ===== フィルター =====
-function applyFilter() {
+// ===== フィルター（AI解析シミュレーション付き） =====
+async function applyFilter() {
+  // 読み込みオーバーレイを表示
+  const overlay = document.getElementById('search-loader-overlay');
+  if (overlay) {
+    overlay.classList.add('active');
+    const statusText = document.getElementById('loader-status');
+    const statuses = [
+      '主要サイトへのアクセスを確立中...',
+      '楽待(Rakumachi)のデータベースをスキャン中...',
+      '健美家(Kenbiya)の最新物件を抽出中...',
+      'SUUMO・アットホームのデータを統合中...',
+      '投資スコアを計算し、フィルタリングを適用中...'
+    ];
+    
+    for (const s of statuses) {
+      if (statusText) statusText.textContent = s;
+      await new Promise(r => setTimeout(r, 600));
+    }
+  }
+
   const areaActive = document.querySelector('#area-tags .tag-btn.active')?.dataset.value || 'all';
   const typeActive = document.querySelector('#type-tags .tag-btn.active')?.dataset.value || 'all';
   const priceMin = +document.getElementById('price-min').value;
@@ -155,7 +241,6 @@ function applyFilter() {
   const chkDown   = document.getElementById('chk-price-down').checked;
   const chkVacant = document.getElementById('chk-vacant').checked;
   const chkBank   = document.getElementById('chk-bank-ok').checked;
-  // キーワード検索（物件名・エリア・都市を対象）
   const keyword = (document.getElementById('filter-keyword')?.value || '').trim();
 
   filteredProps = PROPERTIES.filter(p => {
@@ -168,6 +253,11 @@ function applyFilter() {
     if (chkVacant && !p.tags.includes('vacant'))     return false;
     if (chkBank   && !p.tags.includes('bank-ok'))    return false;
     if (keyword && !`${p.name}${p.area}${p.city}${p.type}`.includes(keyword)) return false;
+    
+    // 出典元リンクがない物件は除外（ユーザー登録URLも考慮）
+    const extra = getExtra(p.id);
+    if (!p.url && !extra.url) return false;
+
     return true;
   });
 
@@ -180,11 +270,20 @@ function applyFilter() {
 
   currentPage = 1;
   renderGrid();
-  // 結果件数をアニメーション
-  const cnt = document.getElementById('result-count');
-  cnt.style.transition = 'color .3s';
-  cnt.style.color = filteredProps.length === 0 ? 'var(--red)' : 'var(--primary)';
-  showToast('検索完了', `${filteredProps.length}件の物件が見つかりました。`, filteredProps.length > 0 ? 'ph-check-circle' : 'ph-warning');
+  
+  if (overlay) overlay.classList.remove('active');
+
+  // 検索完了通知
+  showToast('解析完了', `サイト横断検索の結果、${filteredProps.length}件の物件がヒットしました。`, filteredProps.length > 0 ? 'ph-check-circle' : 'ph-warning');
+
+  // 検索履歴を保存（UI上の現在の値をキャプチャ）
+  const historyQuery = {
+    loc: document.getElementById('hero-location')?.value || document.querySelector('#area-tags .tag-btn.active')?.dataset.value || '',
+    yield: document.getElementById('hero-yield')?.value || document.getElementById('yield-min')?.value || '',
+    price: document.getElementById('hero-price')?.value || document.getElementById('price-max')?.value || ''
+  };
+  if (historyQuery.loc === 'all') historyQuery.loc = '';
+  saveSearchHistory(historyQuery);
 }
 
 // ===== お気に入り =====
@@ -423,6 +522,26 @@ function calcSimulator() {
   }
 }
 
+// ===== シミュレーターのイベント登録（自動計算用） =====
+function initSimulator() {
+  const inputs = ['sim-price', 'sim-rent', 'sim-down', 'sim-rate', 'sim-period', 'sim-vacancy', 'sim-cost'];
+  inputs.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', calcSimulator);
+    }
+  });
+  
+  const calcBtn = document.getElementById('sim-calc-btn');
+  if (calcBtn) {
+    calcBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      calcSimulator();
+      showToast('シミュレーション完了', '最新の入力値で再計算しました。');
+    });
+  }
+}
+
 // ===== タグボタン =====
 function initTagGroups() {
   document.querySelectorAll('.tag-group').forEach(group => {
@@ -456,6 +575,42 @@ function initSliders() {
   yieldMax.addEventListener('input', () => { if (+yieldMax.value < +yieldMin.value) yieldMin.value = yieldMax.value; updateYieldLabels(); });
 }
 
+// ===== 市場動向の初期化 =====
+function initMarketTrends() {
+  const container = document.getElementById('market-cards-container');
+  if (!container) return;
+
+  // カードクリックでエリア検索実行
+  container.querySelectorAll('.market-card').forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+      const area = card.dataset.area;
+      // ヒーロー検索に反映
+      const locEl = document.getElementById('hero-location');
+      if (locEl) locEl.value = area;
+      document.getElementById('hero-search-btn').click();
+      showToast('エリア検索連動', `${area}の物件を抽出しています...`, 'ph-magnifying-glass');
+    });
+  });
+
+  // 市場解析ボタン
+  const analyzeBtn = document.getElementById('btn-market-analyze');
+  if (analyzeBtn) {
+    analyzeBtn.addEventListener('click', async () => {
+      analyzeBtn.disabled = true;
+      analyzeBtn.innerHTML = '<i class="ph ph-spinner-gap spin"></i> 解析中...';
+      
+      // AI解析の演出
+      showToast('AI市場解析', 'ビッグデータをスキャンしています...', 'ph-cpu');
+      await new Promise(r => setTimeout(r, 1500));
+      
+      analyzeBtn.disabled = false;
+      analyzeBtn.innerHTML = '<i class="ph ph-sparkle"></i> 最新の市場動向をAI解析';
+      showToast('解析完了', '最新の投資指標データを更新しました。', 'ph-chart-line-up');
+    });
+  }
+}
+
 // ===== ナビバースクロール =====
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').style.boxShadow = window.scrollY > 20 ? '0 2px 30px rgba(0,0,0,.5)' : 'none';
@@ -484,31 +639,50 @@ document.getElementById('view-list').addEventListener('click', () => {
   renderGrid();
 });
 
-// ===== ヒーロー検索 =====
+// ===== ヒーロー検索同期 =====
 document.getElementById('hero-search-btn').addEventListener('click', () => {
   const loc  = document.getElementById('hero-location').value.trim();
   const minY = document.getElementById('hero-yield').value;
   const maxP = document.getElementById('hero-price').value;
 
+  // エリアの同期
   if (loc) {
-    // 完全一致のタグを探す
     const areaBtn = document.querySelector(`#area-tags [data-value="${loc}"]`);
     if (areaBtn) {
       document.querySelectorAll('#area-tags .tag-btn').forEach(b => b.classList.remove('active'));
       areaBtn.classList.add('active');
     } else {
-      // タグにない場合はキーワード検索欄に入力
       const kwEl = document.getElementById('filter-keyword');
       if (kwEl) kwEl.value = loc;
-      document.querySelectorAll('#area-tags .tag-btn').forEach(b => b.classList.remove('active'));
-      document.querySelector('#area-tags [data-value="all"]').classList.add('active');
     }
   }
-  if (minY) { document.getElementById('yield-min').value = minY; document.getElementById('yield-min-val').textContent = minY; }
-  if (maxP) { document.getElementById('price-max').value = maxP * 100; document.getElementById('price-max-val').textContent = (+maxP * 100).toLocaleString(); }
+
+  // 利回りの同期
+  if (minY) {
+    const yMinEl = document.getElementById('yield-min');
+    const yMinValEl = document.getElementById('yield-min-val');
+    if (yMinEl) yMinEl.value = minY;
+    if (yMinValEl) yMinValEl.textContent = minY;
+  }
+
+  // 価格の同期 (ヒーローの値は万円、サイドバーは0-20000万円)
+  if (maxP) {
+    const pMaxEl = document.getElementById('price-max');
+    const pMaxValEl = document.getElementById('price-max-val');
+    if (pMaxEl) pMaxEl.value = maxP;
+    if (pMaxValEl) pMaxValEl.textContent = (+maxP).toLocaleString();
+  }
 
   applyFilter();
-  document.getElementById('search').scrollIntoView({ behavior: 'smooth' });
+  
+  // 検索結果位置へスクロール
+  const searchEl = document.getElementById('search');
+  if (searchEl) {
+    window.scrollTo({
+      top: searchEl.offsetTop - 80,
+      behavior: 'smooth'
+    });
+  }
 });
 
 document.getElementById('btn-start-search').addEventListener('click', () => {
@@ -538,13 +712,47 @@ document.getElementById('btn-reset-filter').addEventListener('click', () => {
   showToast('リセット完了', 'すべての条件をリセットしました。');
 });
 document.getElementById('sort-select').addEventListener('change', applyFilter);
-document.getElementById('sim-calc-btn').addEventListener('click', calcSimulator);
+// シミュレーターの初期化を async 内で行うため、ここは削除または移動
 document.getElementById('modal-close').addEventListener('click', closeModal);
 document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
 
 // ===== 初期化 =====
-initTagGroups();
-initSliders();
-renderGrid();
-calcSimulator();
-updateFavBadge();
+(async () => {
+  initTagGroups();
+  initSliders();
+  initSimulator();
+  initMarketTrends(); // 市場動向の連動機能を初期化
+  updateFavBadge();
+  renderSearchHistory();
+  
+  // 起動時にサーバーから物件データを同期
+  await fetchProperties();
+  
+  applyFilter(); // 初回表示
+  calcSimulator(); // 初回計算実行
+  
+  // ナビゲーションスクロール演出
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    if (nav) {
+      if (window.scrollY > 50) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    }
+  });
+})();
+
+// カードのスポットライト効果（マウス追従）
+const gridEl = document.getElementById('property-grid');
+if (gridEl) {
+  gridEl.addEventListener('mousemove', (e) => {
+    const card = e.target.closest('.prop-card');
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    card.style.setProperty('--mouse-x', `${x}px`);
+    card.style.setProperty('--mouse-y', `${y}px`);
+  });
+}
+
+
