@@ -302,7 +302,7 @@ async function applyFilter() {
   const keyword = (document.getElementById('filter-keyword')?.value || '').trim();
 
   filteredProps = PROPERTIES.filter(p => {
-    if (areaActive !== 'all' && p.area !== areaActive) return false;
+    if (areaActive !== 'all' && p.area.trim() !== areaActive.trim()) return false;
     if (typeActive !== 'all' && p.type !== typeActive) return false;
     if (p.price < priceMin || p.price > priceMax) return false;
     if (p.yield < yieldMin || p.yield > yieldMax) return false;
