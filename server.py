@@ -46,5 +46,5 @@ class APIHandler(http.server.SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     with socketserver.TCPServer(("", PORT), APIHandler) as httpd:
-        print(f"PropInvest Server running at http://localhost:{PORT}")
+        print(f"太田不動産投資サーチ Server running at http://localhost:{PORT}")
         httpd.serve_forever()
