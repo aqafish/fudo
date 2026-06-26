@@ -187,6 +187,32 @@
               <button class="tag-btn" data-value="土地">土地</button>
             </div>
           </div>
+          <!-- 掲載サイト -->
+          <div class="filter-group">
+            <label class="filter-label"><i class="ph ph-globe"></i> 掲載サイト (横断検索)</label>
+            <div class="checkbox-group">
+              <label class="checkbox-item">
+                <input type="checkbox" class="site-filter" value="Rakumachi" checked>
+                <span>楽待</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" class="site-filter" value="Kenbiya" checked>
+                <span>健美家</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" class="site-filter" value="SUUMO" checked>
+                <span>SUUMO</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" class="site-filter" value="AtHome" checked>
+                <span>AtHome</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" class="site-filter" value="LIFULL" checked>
+                <span>LIFULL HOME'S</span>
+              </label>
+            </div>
+          </div>
           <!-- 価格・利回りスライダー -->
           <div class="filter-sliders">
             <div class="slider-group">
@@ -218,6 +244,30 @@
               <label class="checkbox-item"><input type="checkbox" id="chk-price-down"> <span>値下がり物件</span></label>
               <label class="checkbox-item"><input type="checkbox" id="chk-vacant"> <span>空き室あり</span></label>
               <label class="checkbox-item"><input type="checkbox" id="chk-bank-ok"> <span>銀行融資実績あり</span></label>
+            </div>
+          </div>
+
+          <!-- 網羅状況モニタリング -->
+          <div class="monitoring-panel" style="margin:20px 0; padding:16px; background:rgba(56, 189, 248, 0.03); border:1px solid var(--border); border-radius:12px;">
+            <h4 style="font-size:0.8rem; color:var(--primary); margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+              <span class="live-dot" style="width:8px; height:8px; background:#10b981; border-radius:50%; box-shadow:0 0-10px #10b981; animation: pulse 2s infinite;"></span>
+              リアルタイム網羅状況
+            </h4>
+            <div style="display:flex; flex-direction:column; gap:6px; font-size:0.75rem; color:var(--text2);">
+              <div style="display:flex; justify-content:space-between;"><span>全サイト合計物件数:</span> <strong id="total-index-count" style="color:var(--text);">12,847 件</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span>監視サイト数:</span> <strong>5 サイト</strong></div>
+            </div>
+            
+            <!-- ライブログ -->
+            <div id="live-monitor-log" style="margin-top:12px; padding:8px; background:rgba(0,0,0,0.2); border-radius:6px; height:60px; overflow:hidden; font-family:monospace; font-size:0.65rem; color:#10b981; line-height:1.4;">
+              <div class="log-entry">> システム起動完了</div>
+              <div class="log-entry">> 全ポータル接続確立</div>
+            </div>
+
+            <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:4px;">
+              <span style="font-size:0.6rem; padding:2px 6px; background:rgba(16, 185, 129, 0.1); color:#10b981; border-radius:4px;">Rakumachi: LIVE</span>
+              <span style="font-size:0.6rem; padding:2px 6px; background:rgba(16, 185, 129, 0.1); color:#10b981; border-radius:4px;">Kenbiya: LIVE</span>
+              <span style="font-size:0.6rem; padding:2px 6px; background:rgba(16, 185, 129, 0.1); color:#10b981; border-radius:4px;">SUUMO: LIVE</span>
             </div>
           </div>
           <button class="btn-apply-filter" id="btn-apply-filter">
