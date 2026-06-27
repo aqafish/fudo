@@ -194,7 +194,7 @@ function renderGrid() {
           <button class="card-site-btn" onclick="openExternalSite(event, '${safeUrl}')" style="flex:1; background:var(--bg3); border:1px solid var(--primary); color:var(--primary); padding:10px; border-radius:8px; font-weight:700; cursor:pointer;">
             <i class="ph ph-arrow-square-out"></i> サイトを開く
           </button>
-          <button class="card-detail-btn" style="flex:1; background:var(--primary); color:white; border:none; padding:10px; border-radius:8px; font-weight:700; cursor:pointer;">分析詳細</button>
+          <button class="card-detail-btn" onclick="event.stopPropagation(); openModal(${p.id})" style="flex:1; background:var(--primary); color:white; border:none; padding:10px; border-radius:8px; font-weight:700; cursor:pointer;"><i class="ph ph-chart-bar"></i> 分析詳細</button>
         </div>
       </div>
     `;
